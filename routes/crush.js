@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const rescue = require('express-rescue');
 const crushes = require('../crush.json');
 
 const app = express();
@@ -24,5 +25,24 @@ app.get('/:id', (req, res) => {
     });
   }
 });
+
+app.post('/', rescue(async (req, res) => {
+  const size = crushes.length;
+  crushes[size] = {
+    name: req.body.name,
+    age: req.body.age,
+    id: size + 1,
+    date: req.body.date,
+   };
+
+  try {
+    await fs.promises.writeFile(`${__dirname}/../crush.json`, JSON.stringify(crushes));
+    res.status(201).send({
+      message: 'Salvo com sucesso!',
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+}));
 
 module.exports = app;
