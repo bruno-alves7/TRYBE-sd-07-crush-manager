@@ -1,19 +1,22 @@
 const express = require('express');
 const fs = require('fs');
 const rescue = require('express-rescue');
-const crushes = require('../crush.json');
+// const crushes = require('../crush.json');
 
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res) => {
-  if (!crushes.length) {
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
+  if (!crushes) {
     res.status(200).send([]);
   } else {
     res.status(200).send(crushes);
-  }
+} 
 });
 
 app.get('/:id', (req, res) => {
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
   const { id } = req.params;
   const key = parseInt(id, 0) - 1;
 
@@ -27,6 +30,7 @@ app.get('/:id', (req, res) => {
 });
 
 app.post('/', rescue(async (req, res) => {
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
   const size = crushes.length;
   crushes[size] = {
     name: req.body.name,
