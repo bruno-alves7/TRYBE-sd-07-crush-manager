@@ -4,7 +4,11 @@ const crushes = require('../crush.json');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.status(200).send(crushes);
+  if (!crushes.length) {
+    res.status(200).send([]);
+  } else {
+    res.status(200).send(crushes);
+  }
 });
 
 app.get('/:id', async (req, res) => {
