@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const crushes = require('../crush.json');
 
 const app = express();
@@ -11,7 +12,7 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/:id', async (req, res) => {
+app.get('/:id', (req, res) => {
   const { id } = req.params;
   const key = parseInt(id, 0) - 1;
 
