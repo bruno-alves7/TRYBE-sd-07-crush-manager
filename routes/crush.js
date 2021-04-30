@@ -43,12 +43,16 @@ function autDatedAt(date) {
   }
   if (!rex.test(datedAt)) throw new Error('O campo "datedAt" deve ter o formato "dd/mm/aaaa"');
 }
-function autDatedRate(date) {
-if (date.rate === undefined || !date.datedAt) {
+
+function autDate(date) {
+  if (date === undefined) {
   throw new Error('O campo "date" é obrigatório e "datedAt" e "rate" não podem ser vazios');
 }
-if (date.rate < 1 || date.rate > 5) {
-  throw new Error('O campo "rate" deve ser um inteiro de 1 à 5');
+}
+
+function autRate(date) {
+  if (date.rate < 1 || date.rate > 5) {
+    throw new Error('O campo "rate" deve ser um inteiro de 1 à 5');
 }
 }
 
@@ -59,8 +63,9 @@ app.post('/', rescue((req, res) => {
   const { name, age, date } = req.body;
   try {
   autPost(name, age);
+  autDate(date);
    autDatedAt(date);
-   autDatedRate(date);
+   autRate(date);
    crushes[size] = { name: req.body.name, age: req.body.age, id: size + 1, date: req.body.date };
    fs.promises.writeFile(`${__dirname}/../crush.json`, JSON.stringify(crushes));
     res.status(201).send({ id: crushes[size].id,
