@@ -14,7 +14,6 @@ app.get('/', (_request, response) => {
   response.status(SUCCESS).send();
 });
 
-app.use(express.json());
 app.use('/crush', crush);
 app.use('/login', login);
 
