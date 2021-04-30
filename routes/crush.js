@@ -44,11 +44,10 @@ function autDatedAt(date) {
   if (!rex.test(datedAt)) throw new Error('O campo "datedAt" deve ter o formato "dd/mm/aaaa"');
 }
 function autDatedRate(date) {
-const { datedAt, rate } = date;
-if (rate === undefined || !datedAt) {
+if (date.rate === undefined || !date.datedAt) {
   throw new Error('O campo "date" é obrigatório e "datedAt" e "rate" não podem ser vazios');
 }
-if (rate < 1 || rate > 5) {
+if (date.rate < 1 || date.rate > 5) {
   throw new Error('O campo "rate" deve ser um inteiro de 1 à 5');
 }
 }
