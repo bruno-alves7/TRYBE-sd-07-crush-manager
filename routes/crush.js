@@ -45,7 +45,7 @@ function autDatedAt(date) {
 }
 function autDatedRate(date) {
 const { datedAt, rate } = date;
-if (!rate || !datedAt) {
+if (rate === undefined || !datedAt) {
   throw new Error('O campo "date" é obrigatório e "datedAt" e "rate" não podem ser vazios');
 }
 if (rate < 1 || rate > 5) {
