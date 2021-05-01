@@ -87,7 +87,7 @@ app.put('/:id', rescue((req, res) => {
    autRate(date);
    crushes[key] = { name, id: parseInt(id, 0), age, date }; 
     fs.promises.writeFile(`${__dirname}/../crush.json`, JSON.stringify(crushes));
-    res.status(201).send({ id: crushes[key].id,
+    res.status(200).send({ id: crushes[key].id,
       name: crushes[key].name,
       age: crushes[key].age,
       date: crushes[key].date });
