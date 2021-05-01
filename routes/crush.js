@@ -94,4 +94,15 @@ app.put('/:id', rescue((req, res) => {
   } catch (error) { res.status(400).send({ message: error.message }); }
 }));
 
+app.delete('/:id', rescue((req, res) => {
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
+  const { id } = req.params;
+  const key = parseInt(id, 0) - 1;
+  crushes.splice(key, 1);
+try {
+  fs.promises.writeFile(`${__dirname}/../crush.json`, JSON.stringify(crushes));
+  res.status(200).send({ message: 'Crush deletado com sucesso' });
+} catch (error) { res.status(400).send({ message: error.message }); }
+}));
+
 module.exports = app;
