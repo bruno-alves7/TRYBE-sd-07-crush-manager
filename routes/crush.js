@@ -5,6 +5,21 @@ const tokenMiddleware = require('../middlewares/tokenMiddleware');
 
 const app = express.Router();
 
+app.get('/search', (req, res) => {
+  const { authorization } = req.headers;
+  if (!authorization) res.status(401).send({ message: 'Token não encontrado' });
+  if (authorization.length < 16) res.status(401).send({ message: 'Token inválido' });
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
+  const { q } = req.query;
+  const crush = crushes.filter((str) => str.name.includes(q));
+      res.status(200).json(crush); 
+  if (!q) {
+    res.status(200).send(crushes);
+  } else {
+    res.status(200).send(crush);
+  }
+});
+
 app.get('/:id', (req, res) => {
   const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
   const { id } = req.params;
@@ -57,6 +72,7 @@ function autRate(date) {
 }
 
 app.use(tokenMiddleware);
+
 app.post('/', rescue((req, res) => {
   const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
   const size = crushes.length;
