@@ -75,4 +75,23 @@ app.post('/', rescue((req, res) => {
   } catch (error) { res.status(400).send({ message: error.message }); }
 }));
 
+app.put('/:id', rescue((req, res) => {
+  const crushes = JSON.parse(fs.readFileSync(`${__dirname}/../crush.json`, 'utf8'));
+  const { name, age, date } = req.body;
+  const { id } = req.params;
+  const key = parseInt(id, 0) - 1;
+  try {
+    autPost(name, age);
+  autDate(date);
+   autDatedAt(date);
+   autRate(date);
+   crushes[key] = { name, id: parseInt(id, 0), age, date }; 
+    fs.promises.writeFile(`${__dirname}/../crush.json`, JSON.stringify(crushes));
+    res.status(201).send({ id: crushes[key].id,
+      name: crushes[key].name,
+      age: crushes[key].age,
+      date: crushes[key].date });
+  } catch (error) { res.status(400).send({ message: error.message }); }
+}));
+
 module.exports = app;
